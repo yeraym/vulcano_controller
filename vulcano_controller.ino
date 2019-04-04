@@ -136,7 +136,7 @@ void readButtons() {
       if(buttons[i].rose()) {
         buttonReleaseTimeStamp[i] = now;
         
-        if(buttonReleaseTimeStamp[i]-buttonPressTimeStamp[i] > 1000){
+        if(buttonReleaseTimeStamp[i]-buttonPressTimeStamp[i] > 500){
           long_press = true;
         }
         
