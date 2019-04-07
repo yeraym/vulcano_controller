@@ -10,15 +10,18 @@ Build for my personal use, shared to help others.
 
 Physical layout
 
-``------------------------
+```
+------------------------
 |  Btn4   Btn5   Btn6  |
 |                      |
 |           Screen     |
 |                      |
 |  Btn1   Btn2   Btn3  |
-------------------------``
+------------------------
+```
 
 **Page 1 - Utility controls**
+
 Btn1: 
 Single press -> Snapshot 1
 Long press -> Stomp mode
@@ -48,6 +51,7 @@ Btn2+Btn3:
 Page Down
 
 **Page 2 - Looper controls**
+
 Btn1: 
 Single press -> Record
       
@@ -75,7 +79,7 @@ Page Down
 
 ## Code organization
 
-I'm using Bounce2 library with BOUNCE_WITH_PROMPT_DETECTION option to achieve fast command firing. With button.fell event being the fastest option but it sends two command when using long press functions and two button functions, to avoid this set command code in button.rose detection of ``readButtons()`` function.
+I'm using Bounce2 library with BOUNCE_WITH_PROMPT_DETECTION option to achieve fast command firing. With button.fell event being the fastest option but it sends two command when using long press and two button commands, to avoid this set command code in button.rose detection of ``readButtons()`` function.
 
 ## Construction
 
