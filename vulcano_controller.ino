@@ -130,17 +130,18 @@ void readButtons() {
       if(buttons[i].read() == LOW) {
         num_pressed++;
       }
-      if(buttons[i].fell()) {
+      if(buttons[i].fell()) { // button pressed -> send command
         buttonPressTimeStamp[i] = now;
+        command = i+1;
       }
       if(buttons[i].rose()) {
         buttonReleaseTimeStamp[i] = now;
         
-        if(buttonReleaseTimeStamp[i]-buttonPressTimeStamp[i] > 500){
+        if(buttonReleaseTimeStamp[i]-buttonPressTimeStamp[i] > 500){ // long press detected -> send command
           long_press = true;
+          command = i+1;
         }
-        
-        command = i+1;
+
       }
   }
 
@@ -148,13 +149,9 @@ void readButtons() {
     if(num_pressed>1) { // if double button command
       wait_all_release = true;
       if(buttons[0].read()==LOW && buttons[1].read()==LOW) { // button 1 + button 2 = pageUp
-        page++;
-        if(page>NUM_PAGES) page = 1;
-        last_command=-1;
+        pageUp();
       } else if(buttons[1].read()==LOW && buttons[2].read()==LOW) { // button 2 + button 3 = pageDown
-        page--;
-        if(page<1) page = NUM_PAGES;
-        last_command=-1;
+        pageDown();
       }
     } /* else if(num_pressed==1 && command!=0) { // if single button command
       Serial.print(now);
@@ -213,6 +210,19 @@ void drawCommandText(const __FlashStringHelper * command_text) {
   display.display();
 }
 
+
+void pageUp() {
+  page++;
+  if(page>NUM_PAGES) page = 1;
+  last_command=-1;  
+}
+
+void pageDown() {
+  page--;
+  if(page<1) page = NUM_PAGES;
+  last_command=-1;
+}
+
 /*
  * PAGE 1
  */
@@ -243,7 +253,7 @@ void drawPage1()
   display.print(F("FS5"));
 
   display.setCursor(88, 20);
-  display.print(F("TUN"));
+  display.print(F("T/T"));
   
   display.display();
 }
@@ -271,9 +281,15 @@ void sendCommandPage1(int _com) {
       drawCommandText(F("SS2"));
     }
   } else if(_com == 3) {
-    last_update = now;
-    MIDI.sendControlChange(69,2,1); // Snapshot 3
-    drawCommandText(F("SS3"));
+    if(long_press) {
+      last_update = now;
+      MIDI.sendControlChange(71,3,1); // Snapshot mode
+      drawCommandText(F("Snaps"));
+    } else {
+      last_update = now;
+      MIDI.sendControlChange(69,2,1); // Snapshot 3
+      drawCommandText(F("SS3"));
+    }
   } else if(_com == 4) {
     last_update = now;
     MIDI.sendControlChange(52,2,1); // FS4
@@ -283,9 +299,15 @@ void sendCommandPage1(int _com) {
     MIDI.sendControlChange(53,2,1); // FS5
     drawCommandText(F("FS5"));
   } else if(_com == 6) {
-    last_update = now;
-    MIDI.sendControlChange(68,68,1); // Tuner
-    drawCommandText(F("Tuner"));
+    if(long_press) {
+      last_update = now;
+      MIDI.sendControlChange(68,68,1); // Tuner
+      drawCommandText(F("Tuner"));
+    } else {
+      last_update = now;
+      MIDI.sendControlChange(64,127,1); // Tap tempo
+      drawCommandText(F("Tap"));
+    }
   }
 }
 
@@ -335,9 +357,13 @@ void sendCommandPage2(int _com) {
     MIDI.sendControlChange(61,127,1); // Looper play
     drawCommandText(F("Play"));
   } else if(_com == 3) {
-    last_update = now;
-    MIDI.sendControlChange(61,0,1); // Looper stop
-    drawCommandText(F("Stop"));
+    if(long_press) { // page down on long press stop to avoid extra commands
+      pageDown();
+    } else {
+      last_update = now;
+      MIDI.sendControlChange(61,0,1); // Looper stop
+      drawCommandText(F("Stop"));
+    }
   } else if(_com == 4) {
     last_update = now;
     MIDI.sendControlChange(60,0,1); // Looper overdub
