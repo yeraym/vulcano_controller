@@ -22,54 +22,47 @@ Physical layout
 
 **Page 1 - Utility controls**
 
-Btn1: 
-Single press -> Snapshot 1
-Long press -> Stomp mode
-      
-Btn2: 
-Single press -> Snapshot 2
-Long press -> Scroll mode
+```
+ btn  |  single press  |  long press
+-------------------------------------
+Btn1  |  Snapshot 1    |  Stomp mode
+-------------------------------------
+Btn2  |  Snapshot 2    |  Scroll mode
+-------------------------------------
+Btn3  |  Snapshot 3    |  Snapshot mode
+-------------------------------------
+Btn4  |  FS4           | 
+-------------------------------------
+Btn5  |  FS5           |
+-------------------------------------
+Btn6  |  Tap Tempo*    |  Tuner
 
-Btn3: 
-Single press -> Snapshot 3
-Long press -> Snapshot mode
+ *delay must be set in note length, not in ms for this to work
+```
 
-Btn4: 
-Single press -> FS4
+Btn1+Btn2: Page Up
 
-Btn5: 
-Single press -> FS5
-
-Btn6: 
-Single press -> Tap Tempo (delay must be set in note length, not in ms for this to work)
-Long press -> Tuner
-
-Btn1+Btn2:
-Page Up
-
-Btn2+Btn3:
-Page Down
+Btn2+Btn3: Page Down
 
 **Page 2 - Looper controls**
 
-Btn1: 
-Single press -> Record
-      
-Btn2: 
-Single press -> Play
+```
+ btn  |  single press  |  long press
+-------------------------------------
+Btn1  |  Record        |     
+-------------------------------------
+Btn2  |  Play          |
+-------------------------------------
+Btn3  |  Stop          | Page Down* 
+-------------------------------------
+Btn4  |  Over dub      |
+-------------------------------------
+Btn5  |  Undo/Redo     |
+-------------------------------------
+Btn6  |  Play once     |
 
-Btn3: 
-Single press -> Stop
-Long press -> Page Down (use this to avoid firing Record or Play commands)
-
-Btn4: 
-Single press -> Over dub
-
-Btn5: 
-Single press -> Undo/Redo
-
-Btn6: 
-Single press -> Play once
+ *use this to avoid firing Record or Play commands
+```
 
 Btn1+Btn2:
 Page Up
