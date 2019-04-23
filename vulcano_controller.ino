@@ -130,12 +130,17 @@ void readButtons() {
       if(buttons[i].read() == LOW) {
         num_pressed++;
       }
-      if(buttons[i].fell()) { // button pressed -> send command
+      if(buttons[i].fell()) { // button pressed 
         buttonPressTimeStamp[i] = now;
-        command = i+1;
+        if(page==2) { // send command only on page 2, looper controls, faster response
+          command = i+1;
+        }
       }
-      if(buttons[i].rose()) {
+      if(buttons[i].rose()) { // button released
         buttonReleaseTimeStamp[i] = now;
+        if(page==1) { // send command only on page 1, avoid collision with long press
+          command = i+1;
+        }
         
         if(buttonReleaseTimeStamp[i]-buttonPressTimeStamp[i] > 500){ // long press detected -> send command
           long_press = true;
